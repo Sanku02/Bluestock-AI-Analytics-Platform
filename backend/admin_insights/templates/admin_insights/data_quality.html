@@ -1,0 +1,65 @@
+<div style="margin-bottom:20px;">
+
+    <a href="/api/admin-insights/">Dashboard</a> |
+
+    <a href="/api/admin-insights/health-monitor/">
+        Health Monitor
+    </a> |
+
+    <a href="/api/admin-insights/anomalies/">
+        Anomalies
+    </a> |
+
+    <a href="/api/admin-insights/data-quality/">
+        Data Quality
+    </a> |
+
+    <a href="/api/admin-insights/api-management/">
+        API Management
+    </a> |
+
+    <a href="/api/admin-insights/api-analytics/">
+        API Analytics
+    </a> |
+
+    <a href="/api/admin-insights/webhooks/">
+        Webhooks
+    </a> |
+
+    <a href="/api/admin-insights/celery-monitor/">
+        Celery Monitor
+    </a> |
+
+    <a href="/api/admin-insights/bulk-import/">
+        Bulk Import
+    </a>
+
+</div>
+
+<hr>
+<h1>Data Quality Matrix</h1>
+
+<table border="1">
+    <tr>
+        <th>Company</th>
+        <th>Year</th>
+        <th>Status</th>
+    </tr>
+
+    {% for row in rows %}
+    <tr>
+        <td>{{ row.0 }}</td>
+        <td>{{ row.1 }}</td>
+
+        {% if row.2 %}
+        <td style="background:lightgreen">
+            Present
+        </td>
+        {% else %}
+        <td style="background:#ff9999">
+            Missing
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>

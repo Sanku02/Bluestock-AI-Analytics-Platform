@@ -1,0 +1,127 @@
+<div style="margin-bottom:20px;">
+
+    <a href="/api/admin-insights/">Dashboard</a> |
+
+    <a href="/api/admin-insights/health-monitor/">
+        Health Monitor
+    </a> |
+
+    <a href="/api/admin-insights/anomalies/">
+        Anomalies
+    </a> |
+
+    <a href="/api/admin-insights/data-quality/">
+        Data Quality
+    </a> |
+
+    <a href="/api/admin-insights/api-management/">
+        API Management
+    </a> |
+
+    <a href="/api/admin-insights/api-analytics/">
+        API Analytics
+    </a> |
+
+    <a href="/api/admin-insights/webhooks/">
+        Webhooks
+    </a> |
+
+    <a href="/api/admin-insights/celery-monitor/">
+        Celery Monitor
+    </a> |
+
+    <a href="/api/admin-insights/bulk-import/">
+        Bulk Import
+    </a>
+
+</div>
+
+<hr>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Executive Summary</title>
+
+    <style>
+        body{
+            font-family: Arial;
+            margin:40px;
+        }
+
+        .cards{
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
+        }
+
+        .card{
+            border:1px solid #ddd;
+            padding:20px;
+            width:200px;
+            border-radius:10px;
+        }
+
+        h1{
+            margin-bottom:30px;
+        }
+    </style>
+
+</head>
+<body>
+
+<h1>Executive Summary</h1>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>Total Companies</h3>
+        <h2>{{ total_companies }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Average Score</h3>
+        <h2>{{ avg_score }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Excellent</h3>
+        <h2>{{ excellent }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Good</h3>
+        <h2>{{ good }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Average</h3>
+        <h2>{{ average }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Weak</h3>
+        <h2>{{ weak }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Poor</h3>
+        <h2>{{ poor }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Sectors</h3>
+        <h2>{{ sector_count }}</h2>
+    </div>
+
+    <div class="card">
+
+    <h3>Anomalies</h3>
+
+    <h2>{{ anomalies }}</h2>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<div style="margin-bottom:20px;">
+
+    <a href="/api/admin-insights/">Dashboard</a> |
+
+    <a href="/api/admin-insights/health-monitor/">
+        Health Monitor
+    </a> |
+
+    <a href="/api/admin-insights/anomalies/">
+        Anomalies
+    </a> |
+
+    <a href="/api/admin-insights/data-quality/">
+        Data Quality
+    </a> |
+
+    <a href="/api/admin-insights/api-management/">
+        API Management
+    </a> |
+
+    <a href="/api/admin-insights/api-analytics/">
+        API Analytics
+    </a> |
+
+    <a href="/api/admin-insights/webhooks/">
+        Webhooks
+    </a> |
+
+    <a href="/api/admin-insights/celery-monitor/">
+        Celery Monitor
+    </a> |
+
+    <a href="/api/admin-insights/bulk-import/">
+        Bulk Import
+    </a>
+
+</div>
+
+<hr>
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Bulk Import</title>
+
+    <style>
+
+        body{
+            font-family:Arial, sans-serif;
+            margin:40px;
+        }
+
+        .success{
+            color:green;
+            font-weight:bold;
+            margin-bottom:20px;
+        }
+
+        .error{
+            color:red;
+            font-weight:bold;
+            margin-bottom:20px;
+        }
+
+        table{
+            border-collapse:collapse;
+            width:100%;
+            margin-top:20px;
+        }
+
+        th,td{
+            border:1px solid #ddd;
+            padding:8px;
+            text-align:left;
+        }
+
+        th{
+            background:#f5f5f5;
+        }
+
+        button{
+            padding:8px 14px;
+            margin-right:10px;
+            cursor:pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Bulk Import</h1>
+
+    {% if success %}
+        <div class="success">
+            {{ success }}
+        </div>
+    {% endif %}
+
+    {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form
+        method="post"
+        enctype="multipart/form-data"
+    >
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button
+            type="submit"
+            name="preview"
+        >
+            Preview CSV
+        </button>
+
+        <button
+            type="submit"
+            name="import"
+        >
+            Import To Warehouse
+        </button>
+
+    </form>
+
+    <hr>
+
+    {% if preview %}
+
+        <h2>Preview</h2>
+
+        {{ preview|safe }}
+
+    {% endif %}
+
+</body>
+
+</html>

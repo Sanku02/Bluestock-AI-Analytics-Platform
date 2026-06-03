@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>{{ company.company_name }}</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            margin:40px;
+        }
+
+        .card{
+            border:1px solid #ddd;
+            padding:20px;
+            margin-bottom:20px;
+            border-radius:6px;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:15px;
+            margin-bottom:30px;
+        }
+
+        .kpi{
+            border:1px solid #ddd;
+            padding:20px;
+            border-radius:6px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th,td{
+            border:1px solid #ddd;
+            padding:10px;
+            text-align:left;
+        }
+
+        th{
+            background:#f5f5f5;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div style="margin-bottom:20px;">
+
+    <a href="/api/admin-insights/">
+        Dashboard
+    </a>
+
+    |
+
+    <a href="/api/admin-insights/health-monitor/">
+        Health Monitor
+    </a>
+
+</div>
+
+<h1>{{ company.company_name }}</h1>
+
+<div class="grid">
+
+    <div class="kpi">
+        <h3>Symbol</h3>
+        <h2>{{ company.symbol }}</h2>
+    </div>
+
+    <div class="kpi">
+        <h3>Sector</h3>
+        <h2>{{ sector.sector_name }}</h2>
+    </div>
+
+    <div class="kpi">
+        <h3>Health Score</h3>
+        <h2>{{ latest_score.health_score|floatformat:2 }}</h2>
+    </div>
+
+    <div class="kpi">
+        <h3>Rating</h3>
+        <h2>{{ latest_score.rating }}</h2>
+    </div>
+
+</div>
+
+<div class="grid">
+
+    <div class="kpi">
+        <h3>ROE</h3>
+        <h2>{{ company.roe_percentage }}</h2>
+    </div>
+
+    <div class="kpi">
+        <h3>ROCE</h3>
+        <h2>{{ company.roce_percentage }}</h2>
+    </div>
+
+    <div class="kpi">
+        <h3>Anomalies</h3>
+        <h2>{{ anomalies }}</h2>
+    </div>
+
+</div>
+ <div  class = "card">
+
+    <h2>Financial Snapshot</h2>
+
+  <div class="card-grid">
+
+    <div class="card">
+        <h3>Equity Capital</h3>
+        <p>{{ latest_balance.equity_capital }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Reserves</h3>
+        <p>{{ latest_balance.reserves }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Borrowings</h3>
+        <p>{{ latest_balance.borrowings }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Assets</h3>
+        <p>{{ latest_balance.total_assets }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Debt Ratio</h3>
+        <p>{{ latest_balance.de_ratio|floatformat:2 }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Financial Year</h3>
+        <p>{{ latest_balance.year_id }}</p>
+    </div>
+
+  </div>
+
+<div class="card">
+
+    <h2>Profitability Snapshot</h2>
+
+    <div class="card-grid">
+
+        <div class="card">
+            <h3>Revenue</h3>
+            <p>{{ latest_pl.sales }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Operating Profit</h3>
+            <p>{{ latest_pl.operating_profit }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Net Profit</h3>
+            <p>{{ latest_pl.net_profit }}</p>
+        </div>
+
+        <div class="card">
+            <h3>EPS</h3>
+            <p>{{ latest_pl.eps|floatformat:2 }}</p>
+        </div>
+
+        <div class="card">
+            <h3>OPM %</h3>
+            <p>{{ latest_pl.opm_pct|floatformat:2 }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Profit Margin %</h3>
+            <p>{{ latest_pl.profit_margin|floatformat:2 }}</p>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <h2>Anomaly Records</h2>
+
+    <table>
+
+        <tr>
+
+            <th>Year</th>
+            <th>Z Score</th>
+            <th>Isolation Forest</th>
+
+        </tr>
+
+        {% for row in anomaly_records %}
+
+        <tr>
+
+            <td>{{ row.year_id }}</td>
+
+            <td>{{ row.anomaly_z_any }}</td>
+
+            <td>{{ row.anomaly_iso }}</td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="3">
+                No anomalies found
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+<div class="card">
+
+    <div class="card">
+
+    <h2>Health Score Trend</h2>
+
+    <canvas id="scoreChart"></canvas>
+
+    </div>
+
+    <h2>Historical Scores</h2>
+
+    <table>
+
+        <tr>
+
+            <th>Date</th>
+            <th>Score</th>
+            <th>Rating</th>
+
+        </tr>
+
+        {% for row in history %}
+
+        <tr>
+
+            <td>{{ row.computed_at }}</td>
+
+            <td>{{ row.health_score|floatformat:2 }}</td>
+
+            <td>{{ row.rating }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+   <script>
+
+    const labels = JSON.parse('{{ score_dates|escapejs }}');
+    const values = JSON.parse('{{ score_values|escapejs }}');
+
+    new Chart(
+        document.getElementById("scoreChart"),
+        {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Health Score",
+                    data: values,
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+                    min: 0,
+                    max: 100
+                }
+
+            }
+
+        }
+            
+        }
+
+        
+    );
+
+    </script>
+
+   
+</body>
+</html>

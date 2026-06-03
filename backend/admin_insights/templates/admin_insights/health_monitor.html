@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+
+<title>Health Monitor</title>
+
+<style>
+
+    body{
+        font-family: Arial;
+        margin: 40px;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+    }
+
+    th,
+    td{
+        border:1px solid #ddd;
+        padding:12px;
+        text-align:left;
+    }
+
+    th{
+        background:#f5f5f5;
+    }
+
+    .excellent{
+        background:#d4edda;
+    }
+
+    .good{
+        background:#d1ecf1;
+    }
+
+    .average{
+        background:#fff3cd;
+    }
+
+    .weak{
+        background:#ffe5b4;
+    }
+
+    .poor{
+        background:#f8d7da;
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<div style="margin-bottom:20px;">
+
+
+<a href="/api/admin-insights/">Dashboard</a> |
+
+<a href="/api/admin-insights/health-monitor/">
+    Health Monitor
+</a> |
+
+<a href="/api/admin-insights/anomalies/">
+    Anomalies
+</a> |
+
+<a href="/api/admin-insights/data-quality/">
+    Data Quality
+</a> |
+
+<a href="/api/admin-insights/api-management/">
+    API Management
+</a> |
+
+<a href="/api/admin-insights/api-analytics/">
+    API Analytics
+</a> |
+
+<a href="/api/admin-insights/webhooks/">
+    Webhooks
+</a> |
+
+<a href="/api/admin-insights/celery-monitor/">
+    Celery Monitor
+</a> |
+
+<a href="/api/admin-insights/bulk-import/">
+    Bulk Import
+</a>
+
+
+</div>
+
+<hr>
+
+<h1>Health Monitor</h1>
+
+<table>
+
+
+<thead>
+
+    <tr>
+
+        <th>Symbol</th>
+        <th>Health Score</th>
+        <th>Rating</th>
+        <th>Computed At</th>
+
+    </tr>
+
+</thead>
+
+<tbody>
+
+{% for company in companies %}
+
+    <tr
+        class="
+        {% if company.rating == 'EXCELLENT' %}
+            excellent
+        {% elif company.rating == 'GOOD' %}
+            good
+        {% elif company.rating == 'AVERAGE' %}
+            average
+        {% elif company.rating == 'WEAK' %}
+            weak
+        {% else %}
+            poor
+        {% endif %}
+        "
+    >
+
+        <td>
+            <a href="/api/admin-insights/company/{{ company.symbol }}/">
+                {{ company.symbol }}
+            </a>
+        </td>
+
+        <td>
+            {{ company.health_score|floatformat:2 }}
+        </td>
+
+        <td>
+            {{ company.rating }}
+        </td>
+
+        <td>
+            {{ company.computed_at }}
+        </td>
+
+    </tr>
+
+{% endfor %}
+
+</tbody>
+
+
+</table>
+
+</body>
+
+</html>

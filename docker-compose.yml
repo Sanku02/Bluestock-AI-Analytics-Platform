@@ -1,0 +1,104 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: bluestock_postgres
+
+    environment:
+      POSTGRES_DB: bluestock_dw
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin789
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: bluestock_redis
+
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    container_name: bluestock_backend
+
+    command: >
+      sh -c "
+      python manage.py migrate &&
+      gunicorn config.wsgi:application
+      --bind 0.0.0.0:8000
+      --workers 3
+      "
+
+    volumes:
+      - ./backend:/app
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - postgres
+      - redis
+
+    environment:
+      DEBUG: "True"
+
+      DB_NAME: bluestock_dw
+      DB_USER: postgres
+      DB_PASSWORD: admin789
+      DB_HOST: postgres
+      DB_PORT: 5432
+
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+
+  celery:
+    build: ./backend
+    container_name: bluestock_celery
+
+    command: celery -A config worker -l info -P solo
+
+    volumes:
+      - ./backend:/app
+
+    depends_on:
+      - backend
+      - redis
+
+    environment:
+      DEBUG: "True"
+
+      DB_NAME: bluestock_dw
+      DB_USER: postgres
+      DB_PASSWORD: admin789
+      DB_HOST: postgres
+      DB_PORT: 5432
+
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+
+  frontend:
+    build: ./frontend
+    container_name: bluestock_frontend
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    stdin_open: true
+    tty: true
+
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

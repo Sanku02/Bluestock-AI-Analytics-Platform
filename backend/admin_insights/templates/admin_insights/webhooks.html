@@ -1,0 +1,119 @@
+<div style="margin-bottom:20px;">
+
+    <a href="/api/admin-insights/">Dashboard</a> |
+
+    <a href="/api/admin-insights/health-monitor/">
+        Health Monitor
+    </a> |
+
+    <a href="/api/admin-insights/anomalies/">
+        Anomalies
+    </a> |
+
+    <a href="/api/admin-insights/data-quality/">
+        Data Quality
+    </a> |
+
+    <a href="/api/admin-insights/api-management/">
+        API Management
+    </a> |
+
+    <a href="/api/admin-insights/api-analytics/">
+        API Analytics
+    </a> |
+
+    <a href="/api/admin-insights/webhooks/">
+        Webhooks
+    </a> |
+
+    <a href="/api/admin-insights/celery-monitor/">
+        Celery Monitor
+    </a> |
+
+    <a href="/api/admin-insights/bulk-import/">
+        Bulk Import
+    </a>
+
+</div>
+
+<hr>
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Webhook Dashboard</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            margin:40px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th,td{
+            border:1px solid #ddd;
+            padding:12px;
+        }
+
+        .success{
+            color:green;
+            font-weight:bold;
+        }
+
+        .failed{
+            color:red;
+            font-weight:bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Webhook Dashboard</h1>
+
+<table>
+
+<tr>
+
+    <th>Event</th>
+    <th>Status</th>
+    <th>Response</th>
+    <th>Created</th>
+
+</tr>
+
+{% for item in deliveries %}
+
+<tr>
+
+    <td>{{ item.event_type }}</td>
+
+    <td>
+
+        {% if item.delivered %}
+            <span class="success">SUCCESS</span>
+        {% else %}
+            <span class="failed">FAILED</span>
+        {% endif %}
+
+    </td>
+
+    <td>{{ item.response_status }}</td>
+
+    <td>{{ item.created_at }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<div style="margin-bottom:20px;">
+
+    <a href="/api/admin-insights/">Dashboard</a> |
+
+    <a href="/api/admin-insights/health-monitor/">
+        Health Monitor
+    </a> |
+
+    <a href="/api/admin-insights/anomalies/">
+        Anomalies
+    </a> |
+
+    <a href="/api/admin-insights/data-quality/">
+        Data Quality
+    </a> |
+
+    <a href="/api/admin-insights/api-management/">
+        API Management
+    </a> |
+
+    <a href="/api/admin-insights/api-analytics/">
+        API Analytics
+    </a> |
+
+    <a href="/api/admin-insights/webhooks/">
+        Webhooks
+    </a> |
+
+    <a href="/api/admin-insights/celery-monitor/">
+        Celery Monitor
+    </a> |
+
+    <a href="/api/admin-insights/bulk-import/">
+        Bulk Import
+    </a>
+
+</div>
+
+<hr>
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Anomalies</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    margin:40px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:12px;
+}
+
+.flag{
+    background:#ffcccc;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Anomaly Monitor</h1>
+
+<table>
+
+<tr>
+
+    <th>Symbol</th>
+    <th>Year</th>
+    <th>Z Score Flag</th>
+    <th>Isolation Forest</th>
+    <th>Final Anomaly</th>
+
+</tr>
+
+{% for row in anomalies %}
+
+<tr {% if row.final_anomaly %}class="flag"{% endif %}>
+
+    <td>{{ row.symbol }}</td>
+
+    <td>{{ row.year_id }}</td>
+
+    <td>{{ row.anomaly_z_any }}</td>
+
+    <td>{{ row.anomaly_iso }}</td>
+
+    <td>{{ row.final_anomaly }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

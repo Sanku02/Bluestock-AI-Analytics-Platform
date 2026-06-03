@@ -1,0 +1,129 @@
+<div style="margin-bottom:20px;">
+
+    <a href="/api/admin-insights/">Dashboard</a> |
+
+    <a href="/api/admin-insights/health-monitor/">
+        Health Monitor
+    </a> |
+
+    <a href="/api/admin-insights/anomalies/">
+        Anomalies
+    </a> |
+
+    <a href="/api/admin-insights/data-quality/">
+        Data Quality
+    </a> |
+
+    <a href="/api/admin-insights/api-management/">
+        API Management
+    </a> |
+
+    <a href="/api/admin-insights/api-analytics/">
+        API Analytics
+    </a> |
+
+    <a href="/api/admin-insights/webhooks/">
+        Webhooks
+    </a> |
+
+    <a href="/api/admin-insights/celery-monitor/">
+        Celery Monitor
+    </a> |
+
+    <a href="/api/admin-insights/bulk-import/">
+        Bulk Import
+    </a>
+
+</div>
+
+<hr>
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>API Analytics</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            margin:40px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+        }
+
+        th,td{
+            border:1px solid #ddd;
+            padding:12px;
+        }
+
+        .cards{
+            display:flex;
+            gap:20px;
+            margin-bottom:30px;
+        }
+
+        .card{
+            border:1px solid #ddd;
+            border-radius:10px;
+            padding:20px;
+            width:220px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>API Analytics</h1>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>Total Calls</h3>
+        <h2>{{ total_calls }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Successful</h3>
+        <h2>{{ success }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Failed</h3>
+        <h2>{{ failed }}</h2>
+    </div>
+
+</div>
+
+<h2>Top Endpoints</h2>
+
+<table>
+
+<tr>
+
+    <th>Endpoint</th>
+    <th>Total Hits</th>
+
+</tr>
+
+{% for endpoint in endpoints %}
+
+<tr>
+
+    <td>{{ endpoint.endpoint }}</td>
+    <td>{{ endpoint.total }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

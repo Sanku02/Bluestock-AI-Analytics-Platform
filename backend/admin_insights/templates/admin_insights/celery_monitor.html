@@ -1,0 +1,116 @@
+<div style="margin-bottom:20px;">
+
+    <a href="/api/admin-insights/">Dashboard</a> |
+
+    <a href="/api/admin-insights/health-monitor/">
+        Health Monitor
+    </a> |
+
+    <a href="/api/admin-insights/anomalies/">
+        Anomalies
+    </a> |
+
+    <a href="/api/admin-insights/data-quality/">
+        Data Quality
+    </a> |
+
+    <a href="/api/admin-insights/api-management/">
+        API Management
+    </a> |
+
+    <a href="/api/admin-insights/api-analytics/">
+        API Analytics
+    </a> |
+
+    <a href="/api/admin-insights/webhooks/">
+        Webhooks
+    </a> |
+
+    <a href="/api/admin-insights/celery-monitor/">
+        Celery Monitor
+    </a> |
+
+    <a href="/api/admin-insights/bulk-import/">
+        Bulk Import
+    </a>
+
+</div>
+
+<hr>
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Celery Monitor</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    margin:40px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:12px;
+}
+
+.enabled{
+    color:green;
+    font-weight:bold;
+}
+
+.disabled{
+    color:red;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Celery Monitor</h1>
+
+<table>
+
+<tr>
+
+    <th>Name</th>
+    <th>Task</th>
+    <th>Status</th>
+
+</tr>
+
+{% for task in tasks %}
+
+<tr>
+
+    <td>{{ task.name }}</td>
+
+    <td>{{ task.task }}</td>
+
+    <td>
+
+        {% if task.enabled %}
+            <span class="enabled">ENABLED</span>
+        {% else %}
+            <span class="disabled">DISABLED</span>
+        {% endif %}
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

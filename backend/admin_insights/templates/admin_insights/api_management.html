@@ -1,0 +1,122 @@
+<div style="margin-bottom:20px;">
+
+    <a href="/api/admin-insights/">Dashboard</a> |
+
+    <a href="/api/admin-insights/health-monitor/">
+        Health Monitor
+    </a> |
+
+    <a href="/api/admin-insights/anomalies/">
+        Anomalies
+    </a> |
+
+    <a href="/api/admin-insights/data-quality/">
+        Data Quality
+    </a> |
+
+    <a href="/api/admin-insights/api-management/">
+        API Management
+    </a> |
+
+    <a href="/api/admin-insights/api-analytics/">
+        API Analytics
+    </a> |
+
+    <a href="/api/admin-insights/webhooks/">
+        Webhooks
+    </a> |
+
+    <a href="/api/admin-insights/celery-monitor/">
+        Celery Monitor
+    </a> |
+
+    <a href="/api/admin-insights/bulk-import/">
+        Bulk Import
+    </a>
+
+</div>
+
+<hr>
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>API Management</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    margin:40px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:12px;
+}
+
+.active{
+    color:green;
+    font-weight:bold;
+}
+
+.inactive{
+    color:red;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>API Management</h1>
+
+<table>
+
+<tr>
+
+    <th>Partner</th>
+    <th>Tier</th>
+    <th>Active Keys</th>
+    <th>Status</th>
+    <th>Created</th>
+
+</tr>
+
+{% for partner in partners %}
+
+<tr>
+
+    <td>{{ partner.company_name }}</td>
+
+    <td>{{ partner.tier }}</td>
+
+    <td>{{ partner.active_keys }}</td>
+
+    <td>
+
+        {% if partner.is_active %}
+            <span class="active">ACTIVE</span>
+        {% else %}
+            <span class="inactive">INACTIVE</span>
+        {% endif %}
+
+    </td>
+
+    <td>{{ partner.created_at }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>
