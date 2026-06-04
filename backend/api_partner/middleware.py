@@ -8,19 +8,14 @@ from .tasks import (
 class PartnerAPILoggingMiddleware:
 
     def __init__(
-
         self,
         get_response
-
     ):
-
         self.get_response = get_response
 
     def __call__(
-
         self,
         request
-
     ):
 
         start_time = time.time()
@@ -29,7 +24,9 @@ class PartnerAPILoggingMiddleware:
             request
         )
 
-        if "/api/partner/" in request.path:
+        # Log every API request
+
+        if request.path.startswith("/api/"):
 
             response_time = (
                 time.time() - start_time
@@ -37,38 +34,40 @@ class PartnerAPILoggingMiddleware:
 
             partner_id = None
 
-            if hasattr(
-                request,
-                "user"
+            if (
+                hasattr(request, "user")
+                and getattr(request.user, "is_authenticated", False)
             ):
 
-                if getattr(
-                    request.user,
-                    "id",
-                    None
-                ):
+                partner_id = request.user.id
 
-                    partner_id = request.user.id
+            try:
 
-            create_api_usage_log.delay(
+                create_api_usage_log.delay(
 
-                partner_id=partner_id,
+                    partner_id=partner_id,
 
-                endpoint=request.path,
+                    endpoint=request.path,
 
-                method=request.method,
+                    method=request.method,
 
-                status_code=response.status_code,
+                    status_code=response.status_code,
 
-                response_time_ms=round(
-                    response_time,
-                    2
-                ),
+                    response_time_ms=round(
+                        response_time,
+                        2
+                    ),
 
-                ip_address=request.META.get(
-                    "REMOTE_ADDR"
+                    ip_address=request.META.get(
+                        "REMOTE_ADDR"
+                    )
+
                 )
 
-            )
+            except Exception as e:
+
+                print(
+                    f"API logging failed: {e}"
+                )
 
         return response
