@@ -59,10 +59,42 @@ from api_partner.models import (
 
 @api_view(["GET"])
 def api_usage_overview(request):
-    return Response({
-        "status": "working"
-    })
 
+    total_calls = APIUsageLog.objects.count()
+
+    success_calls = (
+        APIUsageLog.objects.filter(
+            status_code__lt=400
+        ).count()
+    )
+
+    failed_calls = (
+        APIUsageLog.objects.filter(
+            status_code__gte=400
+        ).count()
+    )
+
+    avg_response_time = (
+        APIUsageLog.objects.aggregate(
+            avg=Avg("response_time_ms")
+        )["avg"]
+    )
+
+    return Response({
+
+        "total_calls": total_calls,
+
+        "successful_calls": success_calls,
+
+        "failed_calls": failed_calls,
+
+        "avg_response_time_ms": (
+            round(avg_response_time, 2)
+            if avg_response_time
+            else 0
+        )
+
+    })
 
 @api_view(["GET"])
 def top_api_endpoints(request):
