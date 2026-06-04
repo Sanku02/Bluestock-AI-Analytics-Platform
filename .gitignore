@@ -32,3 +32,8 @@ celerybeat-schedule.dir
 # OS
 .DS_Store
 Thumbs.db
+
+backend/.env.production
+backend/.env
+.env
+.env.*
